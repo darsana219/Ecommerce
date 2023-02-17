@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+<!--    key1 is the key in AllCategoryProduct views-->
+    {% if key1 %}
+    {{ key1.description|truncatewords:155 }}
+    {% else %}
+        Welcome to All'N 1 world...
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if key1 %}
+    {{ key1.name }} - All'N 1 Store
+    {% else %}
+        See our new collection - All'N 1 Store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if key1 %}
+    <div>
+        <div class="row row_class">
+            <div class="mx-auto">
+                <p><a href="{% url 'ecomapp:AllCategoryProduct' %}">Our Product Collections</a></p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if key1 %}
+        <div class="mx-auto">
+            <img class="image_class" src="{{key1.image.url}}" alt="{{key1.name}}">
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center title_class">{{key1.name}}</h1>
+            <p class="text-justify">{{key1.description}}</p>
+        </div>
+    {% else %}
+        <div>
+            <img class="image_class image_padding_class" src="{% static 'img/banner.png' %}" alt="our products">
+        </div>
+        <br>
+        <div>
+            <h1 class="text-center title_class"> Our product collections..</h1>
+            <p class="text-justify">Every brand is different. Every eCommerce store is made differently. As one of the top eCommerce Marketing Company, we understand your website needs delicately crafted marketing tactics, which must be improved and fine-tuned as you perform progress.
+                Incrementors includes a talented team of E-commerce experts who can produce digitally advanced E-commerce websites in collaboration with their clients.</p>
+        </div>
+    {% endif %}
+    <div class="container">
+        <div class="row mx-auto">
+            {% for i in key2.object_list %}
+                <div class="bottom_margin_class col-9 col-sm-12 col-md-4 col-lg-4">
+                    <div class="card text-center" style="min-width:18rem;">
+                        <a href="{{i.get_url}}"><img class="card-img-top image_class" src="{{i.image.url}}" alt="{{i.name}}" style="width:100%;height:377px"></a>
+                        <div class="card_body_class">
+                            <h4>{{i.name}}</h4>
+                            <p>${{i.price}}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mx-auto">
+            {% if key2.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+                {% for pg in key2.paginator.page_range %}
+                    <a href="?page={{pg}}" class="btn btn-light btn-sm" {% if key2.number == pg %} active {% endif %}>{{pg}}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+{% endblock %}

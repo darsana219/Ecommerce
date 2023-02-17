@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+<!--    key is the key in ProductDetail views-->
+    {{ key.description|truncatewords:155 }}
+{% endblock %}
+
+{% block title %}
+    {% if key1 %}
+    {{ key.name }} - All'N 1 Store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="row product_row_class">
+        <div class="mx-auto">
+            <pre><a href="{% url 'ecomapp:AllCategoryProduct' %}">Home</a>|<a href="{{product.category.get_url }}">{{key.category}}</a>|{{key.name}}</pre>
+        </div>
+        <div class="container">
+        <br>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 text-center">
+                    <div style="min-width:18rem;">
+                        <img src="{{key.image.url}}" alt="{{key.name}}" width="200" height="200">
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <div>
+                        <h1 class="product_title_class">{{key.name}}</h1>
+                        <p>${{key.price}}</p>
+                        <p class="title_class">Product Description</p>
+                        <p class="text-justify prod_text_class">{{key.description}}</p>
+                        {% if key.stock <= 0 %}
+                            <p class="text-justify prod_text_class"><b>Out Of Stock</b></p>
+                        {% else %}
+                            <a class="btn btn-secondary" href="{% url 'cartapp:add_cart' key.id %}">Add to Cart</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
